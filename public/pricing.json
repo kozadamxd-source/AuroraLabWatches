@@ -1,0 +1,72 @@
+{
+  "cases": {
+    "gold": {
+      "name": "Gold",
+      "image": "/images/cases/gold.png",
+      "price": 180
+    },
+    "rose-gold": {
+      "name": "Rose Gold",
+      "image": "/images/cases/rose-gold.png",
+      "price": 180
+    },
+    "two-tone": {
+      "name": "Two-Tone",
+      "image": "/images/cases/two-tone.png",
+      "price": 200
+    }
+  },
+  "dials": {
+    "BLUE": {
+      "name": "Blue",
+      "image": "/images/dials/BLUE.png",
+      "price": 80
+    },
+    "GREEN": {
+      "name": "Green",
+      "image": "/images/dials/GREEN.png",
+      "price": 80
+    },
+    "PINK": {
+      "name": "Pink",
+      "image": "/images/dials/PINK.png",
+      "price": 80
+    },
+    "SKY-BLUE": {
+      "name": "Sky Blue",
+      "image": "/images/dials/SKY-BLUE.png",
+      "price": 80
+    }
+  },
+  "bracelets": {
+    "PRESIDENT-GOLD": {
+      "name": "President Gold",
+      "image": "/images/bracelets/PRESIDENT-GOLD.png",
+      "price": 120
+    },
+    "PRESIDENT-ROSE-GOLD": {
+      "name": "President Rose Gold",
+      "image": "/images/bracelets/PRESIDENT-ROSE-GOLD.png",
+      "price": 120
+    },
+    "PRESIDENT-SILVER": {
+      "name": "President Silver",
+      "image": "/images/bracelets/PRESIDENT-SILVER.png",
+      "price": 120
+    },
+    "PRESIDENT-TWO-TONE-ROSE": {
+      "name": "President Two-Tone Rose",
+      "image": "/images/bracelets/PRESIDENT-TWO-TONE-ROSE.png",
+      "price": 140
+    },
+    "PRESIDENT-TWO-TONE": {
+      "name": "President Two-Tone",
+      "image": "/images/bracelets/PRESIDENT-TWO-TONE.png",
+      "price": 140
+    }
+  },
+  "basePrices": {
+    "movement": 180,
+    "labor": 50
+  }
+}
