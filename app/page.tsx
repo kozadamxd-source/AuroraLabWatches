@@ -17,12 +17,12 @@ export default function Home() {
     <div className="snap-container">
 
       {/* ── FIXED HEADER ── */}
-      <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-8 lg:px-12 h-16">
-        <span className="text-sm font-semibold tracking-tight text-white">AuroraLab</span>
-        <nav className="flex items-center gap-8 text-xs text-white/50 tracking-widest uppercase">
+      <header className="fixed top-0 z-50 flex items-center justify-between h-20" style={{ left: 0, right: 0, paddingLeft: "40px", paddingRight: "40px" }}>
+        <Image src="/LOGO.png" alt="AuroraLab" width={180} height={60} style={{ objectFit: "contain" }} />
+        <nav className="hidden lg:flex items-center gap-10 text-sm text-white/50 tracking-widest uppercase">
           <a href="#craft" className="hover:text-white transition-colors">Rzemiosło</a>
           <a href="#about" className="hover:text-white transition-colors">O nas</a>
-          <Link href="/configurator" className="text-white border border-white/20 px-5 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+          <Link href="/configurator" className="bg-white text-black text-sm font-semibold rounded-full hover:bg-white/90 transition-all duration-300" style={{ padding: "14px 40px" }}>
             Konfiguruj
           </Link>
         </nav>
