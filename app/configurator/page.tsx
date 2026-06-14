@@ -92,13 +92,24 @@ export default function ConfiguratorPage() {
     <div className="bg-[#0a0a0a] text-white">
 
       {/* ── Header ── */}
-      <header className="fixed top-0 inset-x-0 z-50 h-14 flex items-center justify-between px-6 lg:px-10 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5">
-        <Link href="/">
-          <Image src="/LOGO.png" alt="AuroraLab" width={120} height={40} style={{ objectFit: "contain" }} />
-        </Link>
+      <header className="fixed top-0 inset-x-0 z-50 h-20 flex items-center justify-between pl-8 pr-10 lg:pl-14 lg:pr-16 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5">
+        {/* Spacer — pushes steps to the right on mobile */}
+        <div className="lg:hidden w-8 shrink-0" />
+
+        {/* Logo — absolute center on mobile, normal flow on desktop */}
+        <div className="lg:hidden absolute left-1/2 -translate-x-1/2">
+          <Link href="/">
+            <Image src="/LOGO.png" alt="AuroraLab" width={180} height={60} style={{ objectFit: "contain" }} />
+          </Link>
+        </div>
+        <div className="hidden lg:block">
+          <Link href="/">
+            <Image src="/LOGO.png" alt="AuroraLab" width={180} height={60} style={{ objectFit: "contain" }} />
+          </Link>
+        </div>
 
         {/* Step progress */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1" style={{ marginRight: "24px" }}>
           {(["case", "bracelet", "dial"] as Step[]).map((s, i) => {
             const done = stepIndex > i;
             const active = stepIndex === i;
