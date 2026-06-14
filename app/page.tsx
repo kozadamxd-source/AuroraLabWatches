@@ -3,7 +3,8 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 import AuroraBackground from "@/components/AuroraBackground";
 
@@ -13,12 +14,16 @@ const WatchModel3D = dynamic(() => import("@/components/WatchModel3D"), {
 });
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div className="snap-container">
 
       {/* ── FIXED HEADER ── */}
       <header className="fixed top-0 z-50 flex items-center justify-between h-20" style={{ left: 0, right: 0, paddingLeft: "40px", paddingRight: "40px" }}>
         <Image src="/LOGO.png" alt="AuroraLab" width={180} height={60} style={{ objectFit: "contain" }} />
+
+        {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-10 text-sm text-white/50 tracking-widest uppercase">
           <a href="#craft" className="hover:text-white transition-colors">Rzemiosło</a>
           <a href="#about" className="hover:text-white transition-colors">O nas</a>
@@ -26,7 +31,37 @@ export default function Home() {
             Konfiguruj
           </Link>
         </nav>
+
+        {/* Hamburger button — mobile only */}
+        <button
+          className="lg:hidden flex flex-col justify-center gap-1.5 w-8 h-8"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          <span className={`block h-px bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`block h-px bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+          <span className={`block h-px bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+        </button>
       </header>
+
+      {/* Mobile menu overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-40 bg-[#0a0a0a]/95 backdrop-blur-md flex flex-col items-center justify-center gap-10 lg:hidden"
+          >
+            <a href="#craft" onClick={() => setMenuOpen(false)} className="text-2xl font-light text-white/70 hover:text-white uppercase tracking-widest transition-colors">Rzemiosło</a>
+            <a href="#about" onClick={() => setMenuOpen(false)} className="text-2xl font-light text-white/70 hover:text-white uppercase tracking-widest transition-colors">O nas</a>
+            <Link href="/configurator" onClick={() => setMenuOpen(false)} className="mt-4 bg-white text-black text-sm font-semibold rounded-full uppercase tracking-widest hover:bg-white/90 transition-colors" style={{ padding: "16px 48px" }}>
+              Konfiguruj
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ══════════════════════════════════════
           SEKCJA 1 — HERO
