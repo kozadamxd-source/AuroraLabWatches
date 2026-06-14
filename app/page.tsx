@@ -100,51 +100,52 @@ export default function Home() {
       {/* ══════════════════════════════════════
           SEKCJA 2 — RZEMIOSŁO (duże zdjęcie)
       ══════════════════════════════════════ */}
-      <section id="craft" className="snap-section grid grid-cols-1 lg:grid-cols-2">
+      <section id="craft" className="snap-section grid grid-cols-1 lg:grid-cols-[55%_45%] gap-0">
 
         {/* LEFT — duże zdjęcie */}
         <div className="relative h-[50vh] lg:h-full overflow-hidden">
           <Image
-            src="/images/photo-1649803091689-0e65c4e9581f.jpg"
+            src="/images/photo-1694023769753-ab40f6aeb52a.jpg"
             alt="Zegarmistrz przy pracy"
             fill
             sizes="50vw"
             style={{ objectFit: "cover", objectPosition: "center" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/80" />
+          <div className="absolute inset-y-0 right-0 w-px bg-white/5" />
         </div>
 
         {/* RIGHT — tekst */}
-        <div className="flex flex-col justify-center px-10 lg:px-16 py-12 bg-[#0a0a0a]">
+        <div className="flex flex-col items-center justify-center py-16 bg-[#0a0a0a]">
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             viewport={{ once: true }}
-            className="max-w-sm space-y-8"
+            className="max-w-md space-y-10"
           >
-            <div className="space-y-4">
-              <p className="text-[10px] text-white/30 uppercase tracking-widest">Rzemiosło</p>
-              <h2 className="text-4xl lg:text-5xl font-light leading-tight">
+            <div className="space-y-5">
+              <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">Rzemiosło</p>
+              <h2 className="text-4xl lg:text-5xl font-light leading-[1.15] tracking-tight">
                 Precyzja<br />w każdym<br />detalu.
               </h2>
             </div>
 
-            <p className="text-sm text-white/50 leading-relaxed">
+            <p className="text-sm text-white/50 leading-[1.8]">
               Każdy zegarek AuroraLab jest składany ręcznie przez doświadczonego zegarmistrza.
               Żadnych kompromisów — tylko komponenty, które przeszły nasz rygorystyczny dobór.
             </p>
 
-            <div className="space-y-3 pt-2">
+            <div className="space-y-0 border-t border-white/8">
               {[
-                "Mechanizm Seiko NH35 · 28 800 bph",
-                "Koperta 36mm",
-                "Ręczny montaż i regulacja",
-                "Kontrola jakości przed wysyłką",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3 text-xs text-white/60">
-                  <div className="w-1 h-1 rounded-full bg-white/40" />
-                  {item}
+                ["Mechanizm", "Seiko NH35 · 28 800 bph"],
+                ["Koperta", "36mm stal szlachetna"],
+                ["Montaż", "Ręczny, przez zegarmistrza"],
+                ["Kontrola", "Jakość sprawdzona przed wysyłką"],
+              ].map(([label, value]) => (
+                <div key={label} className="flex items-center justify-between py-4 border-b border-white/8">
+                  <span className="text-[10px] text-white/30 uppercase tracking-widest">{label}</span>
+                  <span className="text-xs text-white/70">{value}</span>
                 </div>
               ))}
             </div>
@@ -191,7 +192,7 @@ export default function Home() {
       <section id="about" className="snap-section bg-[#0f0f0f] grid grid-cols-1 lg:grid-cols-2">
 
         {/* RIGHT — tekst po lewej tutaj */}
-        <div className="flex flex-col justify-center px-10 lg:px-16 py-12 order-2 lg:order-1">
+        <div className="flex flex-col items-center justify-center py-16 order-2 lg:order-1">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
