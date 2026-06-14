@@ -413,78 +413,97 @@ export default function ConfiguratorPage() {
       {/* ── Section: SUMMARY ── */}
       <section
         ref={sectionRefs.summary}
-        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#fafafa]"
+        className="min-h-screen flex items-center justify-center px-4 py-20 bg-white"
       >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="w-full max-w-lg"
+          className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
-          <div className="text-center mb-10">
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Gotowe</p>
-            <h2 className="text-3xl lg:text-4xl font-light">Twój zegarek</h2>
+          {/* LEFT — large watch */}
+          <div className="flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.93 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+              className="relative w-72 h-72 lg:w-96 lg:h-96"
+            >
+              {selectedBracelet && (
+                <div className="absolute inset-0">
+                  <Image src={pricing.bracelets[selectedBracelet].image} alt="Bracelet" fill
+                    style={{ objectFit: "contain", filter: "drop-shadow(0 32px 64px rgba(0,0,0,0.2))" }} />
+                </div>
+              )}
+              {selectedCase && (
+                <div className="absolute inset-0 z-10">
+                  <Image src={pricing.cases[selectedCase].image} alt="Case" fill style={{ objectFit: "contain" }} />
+                </div>
+              )}
+              {selectedDial && (
+                <div className="absolute inset-0 z-20">
+                  <Image src={pricing.dials[selectedDial].image} alt="Dial" fill style={{ objectFit: "contain" }} />
+                </div>
+              )}
+            </motion.div>
           </div>
 
-          {/* Final watch */}
-          <div className="relative w-56 h-56 mx-auto mb-10">
-            {selectedBracelet && (
-              <div className="absolute inset-0">
-                <Image src={pricing.bracelets[selectedBracelet].image} alt="Bracelet" fill
-                  style={{ objectFit: "contain", filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.18))" }} />
-              </div>
-            )}
-            {selectedCase && (
-              <div className="absolute inset-0 z-10">
-                <Image src={pricing.cases[selectedCase].image} alt="Case" fill style={{ objectFit: "contain" }} />
-              </div>
-            )}
-            {selectedDial && (
-              <div className="absolute inset-0 z-20">
-                <Image src={pricing.dials[selectedDial].image} alt="Dial" fill style={{ objectFit: "contain" }} />
-              </div>
-            )}
+          {/* RIGHT — summary + CTA */}
+          <div className="flex flex-col gap-8">
+            <div>
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Gotowe</p>
+              <h2 className="text-3xl lg:text-4xl font-light leading-snug">
+                Twój zegarek<br />jest gotowy
+              </h2>
+            </div>
+
+            {/* Spec rows */}
+            <div className="divide-y divide-gray-100">
+              {[
+                { label: "Koperta", value: caseData?.name },
+                { label: "Bransoleta", value: braceletData?.name },
+                { label: "Tarcza", value: dialData?.name },
+                { label: "Mechanizm", value: "Seiko NH35 · 28 800 bph" },
+                { label: "Średnica", value: "36 mm" },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex justify-between py-3 text-sm">
+                  <span className="text-gray-400">{label}</span>
+                  <span className="font-medium text-black">{value ?? "—"}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Price */}
+            <div className="flex items-baseline justify-between pt-2 border-t border-gray-200">
+              <span className="text-xs text-gray-400 uppercase tracking-widest">Łączna cena</span>
+              <span className="text-4xl font-light text-black">${totalPrice}</span>
+            </div>
+
+            {/* CTA */}
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleAddToCart}
+                disabled={cartLoading || !selectedCase || !selectedBracelet || !selectedDial}
+                className="w-full bg-black text-white py-4 rounded-full text-sm font-medium tracking-wide hover:bg-gray-800 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {cartLoading ? "Dodawanie…" : "Dodaj do koszyka"}
+              </button>
+
+              <button
+                onClick={() => {
+                  setSelectedCase(null);
+                  setSelectedBracelet(null);
+                  setSelectedDial(null);
+                  scrollTo("case");
+                }}
+                className="w-full py-3 rounded-full text-sm text-gray-400 border border-gray-200 hover:border-gray-400 hover:text-black transition-all duration-200"
+              >
+                Zacznij od nowa
+              </button>
+            </div>
           </div>
-
-          {/* Summary table */}
-          <div className="bg-white border border-gray-100 divide-y divide-gray-100 mb-6">
-            <div className="flex justify-between px-6 py-4 text-sm">
-              <span className="text-gray-500">Koperta</span>
-              <span className="font-medium">{caseData?.name ?? "—"}</span>
-            </div>
-            <div className="flex justify-between px-6 py-4 text-sm">
-              <span className="text-gray-500">Bransoleta</span>
-              <span className="font-medium">{braceletData?.name ?? "—"}</span>
-            </div>
-            <div className="flex justify-between px-6 py-4 text-sm">
-              <span className="text-gray-500">Tarcza</span>
-              <span className="font-medium">{dialData?.name ?? "—"}</span>
-            </div>
-            <div className="flex justify-between px-6 py-4 text-sm">
-              <span className="text-gray-500">Mechanizm Seiko NH35</span>
-              <span className="font-medium">wliczony</span>
-            </div>
-            <div className="flex justify-between px-6 py-5">
-              <span className="font-medium">Razem</span>
-              <span className="text-2xl font-light">${totalPrice}</span>
-            </div>
-          </div>
-
-          <button
-            onClick={handleAddToCart}
-            disabled={cartLoading || !selectedCase || !selectedBracelet || !selectedDial}
-            className="w-full bg-black text-white py-4 text-sm font-medium tracking-widest uppercase hover:bg-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {cartLoading ? "Dodawanie…" : "Dodaj do koszyka"}
-          </button>
-
-          <button
-            onClick={() => scrollTo("case")}
-            className="w-full mt-3 py-3 text-xs text-gray-400 hover:text-black transition-colors tracking-wide"
-          >
-            Zacznij od nowa
-          </button>
         </motion.div>
       </section>
     </div>
