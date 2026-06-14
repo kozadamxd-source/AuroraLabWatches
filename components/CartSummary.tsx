@@ -18,49 +18,45 @@ export default function CartSummary({
   loading = false,
 }: CartSummaryProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
-      <div className="mb-6 pb-6 border-b border-gray-200">
-        <h3 className="text-sm font-semibold text-black">
-          Twój zegarek
-        </h3>
-        <p className="text-xs text-gray-600 mt-2">
-          Seiko NH35 • 36mm • 28,800 bph
-        </p>
+    <div className="p-6 lg:p-8">
+      <div className="space-y-6">
+        {/* Specs */}
+        <div className="space-y-4 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-500">Koperta</span>
+            <span className="text-black font-medium">{caseName}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-500">Tarcza</span>
+            <span className="text-black font-medium">{dialName}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-500">Bransoleta</span>
+            <span className="text-black font-medium">{braceletName}</span>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-gray-200"></div>
+
+        {/* Price */}
+        <div className="space-y-1">
+          <div className="flex justify-between items-baseline">
+            <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">Cena</span>
+            <span className="text-3xl font-light text-black">${totalPrice}</span>
+          </div>
+          <p className="text-xs text-gray-400">Seiko NH35 • 36mm • 28,800 bph</p>
+        </div>
+
+        {/* Button */}
+        <button
+          onClick={onAddToCart}
+          disabled={loading}
+          className="w-full bg-black text-white py-3 text-sm font-medium tracking-wide hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? "Dodawanie..." : "Dodaj do koszyka"}
+        </button>
       </div>
-
-      <div className="space-y-3 mb-6">
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Koperta</span>
-          <span className="text-black font-medium">{caseName}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Tarcza</span>
-          <span className="text-black font-medium">{dialName}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Bransoleta</span>
-          <span className="text-black font-medium">{braceletName}</span>
-        </div>
-      </div>
-
-      <div className="border-t border-gray-200 pt-6 mb-6">
-        <div className="flex justify-between items-baseline">
-          <span className="text-sm text-gray-600">Razem</span>
-          <span className="text-3xl font-bold text-black">${totalPrice}</span>
-        </div>
-      </div>
-
-      <button
-        onClick={onAddToCart}
-        disabled={loading}
-        className="w-full bg-black text-white py-3 font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? "Dodawanie..." : "Dodaj do koszyka"}
-      </button>
-
-      <p className="text-xs text-gray-500 text-center mt-4">
-        Darmowa dostawa na całym świecie
-      </p>
     </div>
   );
 }

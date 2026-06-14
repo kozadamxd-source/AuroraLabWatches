@@ -29,7 +29,7 @@ export default function ConfiguratorPage() {
   if (!pricing) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-[#d4af37] font-mono">Loading configurator...</p>
+        <p className="text-gray-400">Ładowanie...</p>
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function ConfiguratorPage() {
       setCartLoading(false);
       setCartItems((prev) => prev + 1);
       alert(
-        `Custom watch added to cart! Total items: ${cartItems + 1}`
+        `Zegarek dodany do koszyka! Razem: ${cartItems + 1}`
       );
     }, 500);
   };
@@ -83,34 +83,33 @@ export default function ConfiguratorPage() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="border-b border-gray-200 py-4 sticky top-0 z-40 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-black">AuroraLab</h1>
-              <p className="text-xs text-gray-600 mt-1">Konfigurator zegarków</p>
-            </div>
-          </div>
+        <div className="max-w-full px-4 sm:px-6 lg:px-8">
+          <h1 className="text-xl font-semibold text-black">AuroraLab</h1>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left: Watch Preview */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-20">
-              <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
-                <WatchPreview
-                  caseImage={currentCase.image}
-                  dialImage={currentDial.image}
-                  braceletImage={currentBracelet.image}
-                />
-              </div>
+      <main className="pb-32 lg:pb-0">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-0 min-h-[calc(100vh-80px)]">
+          {/* Left: Watch Preview - 60% on desktop, full on mobile */}
+          <div className="lg:col-span-3 bg-gray-50 flex items-center justify-center p-8 lg:p-16 border-b lg:border-b-0 lg:border-r border-gray-200">
+            <div className="w-full">
+              <WatchPreview
+                caseImage={currentCase.image}
+                dialImage={currentDial.image}
+                braceletImage={currentBracelet.image}
+              />
             </div>
           </div>
 
-          {/* Middle: Configuration Options */}
-          <div className="lg:col-span-1">
+          {/* Right: Configuration - 40% on desktop */}
+          <div className="lg:col-span-2 lg:overflow-y-auto p-6 lg:p-8">
             <div className="space-y-8">
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide mb-4 font-medium">
+                  Personalizuj zegarek
+                </p>
+              </div>
+
               <ConfigPanel
                 title="Koperta"
                 options={caseOptions}
@@ -131,22 +130,20 @@ export default function ConfiguratorPage() {
               />
             </div>
           </div>
-
-          {/* Right: Cart Summary */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-20">
-              <CartSummary
-                caseName={currentCase.name}
-                dialName={currentDial.name}
-                braceletName={currentBracelet.name}
-                totalPrice={totalPrice}
-                onAddToCart={handleAddToCart}
-                loading={cartLoading}
-              />
-            </div>
-          </div>
         </div>
       </main>
+
+      {/* Sticky Summary - Bottom on Mobile, Side on Desktop */}
+      <div className="fixed bottom-0 left-0 right-0 lg:fixed lg:right-0 lg:top-20 lg:w-auto lg:max-w-sm border-t lg:border-t lg:border-l lg:border-gray-200 bg-white lg:border-b">
+        <CartSummary
+          caseName={currentCase.name}
+          dialName={currentDial.name}
+          braceletName={currentBracelet.name}
+          totalPrice={totalPrice}
+          onAddToCart={handleAddToCart}
+          loading={cartLoading}
+        />
+      </div>
     </div>
   );
 }
