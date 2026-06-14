@@ -93,8 +93,8 @@ export default function ConfiguratorPage() {
 
       {/* ── Header ── */}
       <header className="fixed top-0 inset-x-0 z-50 h-14 flex items-center justify-between px-6 lg:px-10 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5">
-        <Link href="/" className="text-sm font-semibold tracking-tight text-white">
-          AuroraLab
+        <Link href="/">
+          <Image src="/LOGO.png" alt="AuroraLab" width={120} height={40} style={{ objectFit: "contain" }} />
         </Link>
 
         {/* Step progress */}
