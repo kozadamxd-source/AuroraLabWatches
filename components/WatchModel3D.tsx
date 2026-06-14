@@ -32,9 +32,10 @@ export default function WatchModel3D() {
       style={{ width: "100%", height: "100%" }}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[5, 5, 5]} intensity={1.2} />
-      <directionalLight position={[-3, 2, -3]} intensity={0.4} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[5, 5, 5]} intensity={1.4} color="#ffffff" />
+      <directionalLight position={[-4, 2, -2]} intensity={0.3} color="#8888ff" />
+      <pointLight position={[0, 3, 2]} intensity={0.6} color="#ffffff" />
       <Suspense fallback={null}>
         <WatchMesh />
         <Environment preset="studio" />

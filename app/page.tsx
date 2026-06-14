@@ -7,236 +7,270 @@ import { motion } from "framer-motion";
 
 const WatchModel3D = dynamic(() => import("@/components/WatchModel3D"), {
   ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-8 h-8 border border-gray-200 rounded-full animate-spin border-t-gray-500" />
-    </div>
-  ),
+  loading: () => null,
 });
-
-const photos = [
-  {
-    src: "/images/photo-1649803091689-0e65c4e9581f.jpg",
-    label: "Ręczny montaż",
-    desc: "Każdy zegarek składany jest ręcznie przez doświadczonego zegarmistrza.",
-  },
-  {
-    src: "/images/photo-1612263731558-bbac49f8581a.jpg",
-    label: "Precyzja mechanizmu",
-    desc: "Mechanizm Seiko NH35 — 28 800 drgań na godzinę.",
-  },
-  {
-    src: "/images/photo-1633451238042-85d93d267866.jpg",
-    label: "Detal i rzemiosło",
-    desc: "Każdy trybik to efekt dziesiątek lat tradycji zegarmistrzostwa.",
-  },
-];
 
 export default function Home() {
   return (
-    <div className="bg-white text-black">
+    <div className="snap-container">
 
-      {/* ── HEADER ── */}
-      <header className="fixed top-0 inset-x-0 z-50 h-14 flex items-center justify-between px-6 lg:px-10 bg-white/90 backdrop-blur-sm border-b border-gray-100">
-        <span className="text-base font-semibold tracking-tight">AuroraLab</span>
-        <nav className="flex items-center gap-8 text-sm text-gray-500">
-          <a href="#craft" className="hover:text-black transition-colors">Rzemiosło</a>
-          <a href="#about" className="hover:text-black transition-colors">O nas</a>
-          <Link
-            href="/configurator"
-            className="bg-black text-white text-xs font-medium px-5 py-2 rounded-full hover:bg-gray-800 transition-colors"
-          >
+      {/* ── FIXED HEADER ── */}
+      <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-8 lg:px-12 h-16">
+        <span className="text-sm font-semibold tracking-tight text-white">AuroraLab</span>
+        <nav className="flex items-center gap-8 text-xs text-white/50 tracking-widest uppercase">
+          <a href="#craft" className="hover:text-white transition-colors">Rzemiosło</a>
+          <a href="#about" className="hover:text-white transition-colors">O nas</a>
+          <Link href="/configurator" className="text-white border border-white/20 px-5 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300">
             Konfiguruj
           </Link>
         </nav>
       </header>
 
-      {/* ── HERO — 3D model + headline ── */}
-      <section className="min-h-screen pt-14 grid grid-cols-1 lg:grid-cols-2">
+      {/* ══════════════════════════════════════
+          SEKCJA 1 — HERO
+      ══════════════════════════════════════ */}
+      <section className="snap-section bg-[#0a0a0a] flex items-center justify-center">
 
-        {/* LEFT — headline */}
-        <div className="flex flex-col justify-center px-8 lg:px-16 py-20 lg:py-0 order-2 lg:order-1">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-md space-y-8"
+        {/* Big background text */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span
+            className="text-[20vw] font-black tracking-tighter text-white leading-none"
+            style={{ opacity: 0.04, letterSpacing: "-0.05em" }}
           >
-            <div className="space-y-3">
-              <p className="text-[10px] text-gray-400 uppercase tracking-widest">
-                Seiko NH35 · Custom Build
-              </p>
-              <h1 className="text-5xl lg:text-6xl font-light leading-[1.1] tracking-tight">
-                Zegarek<br />szyty na<br />miarę.
-              </h1>
+            AURORA
+          </span>
+        </div>
+
+        {/* 3D model — full center */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0"
+        >
+          <WatchModel3D />
+        </motion.div>
+
+        {/* Bottom: headline + CTA */}
+        <div className="absolute bottom-12 inset-x-0 flex flex-col items-center gap-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="space-y-2"
+          >
+            <p className="text-xs tracking-widest text-white/40 uppercase">Seiko NH35 · Custom Build</p>
+            <h1 className="text-4xl lg:text-5xl font-light text-white">
+              Zegarek szyty na miarę.
+            </h1>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.6 }}
+          >
+            <Link
+              href="/configurator"
+              className="inline-flex items-center gap-2 bg-white text-black text-xs font-semibold tracking-widest uppercase px-8 py-3.5 rounded-full hover:bg-white/90 transition-colors"
+            >
+              Stwórz swój zegarek
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
+          className="absolute right-8 bottom-12 flex flex-col items-center gap-2"
+        >
+          <span className="text-[10px] text-white/30 uppercase tracking-widest rotate-90 origin-center mb-4">Scroll</span>
+          <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent" />
+        </motion.div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          SEKCJA 2 — RZEMIOSŁO (duże zdjęcie)
+      ══════════════════════════════════════ */}
+      <section id="craft" className="snap-section grid grid-cols-1 lg:grid-cols-2">
+
+        {/* LEFT — duże zdjęcie */}
+        <div className="relative h-[50vh] lg:h-full overflow-hidden">
+          <Image
+            src="/images/photo-1649803091689-0e65c4e9581f.jpg"
+            alt="Zegarmistrz przy pracy"
+            fill
+            sizes="50vw"
+            style={{ objectFit: "cover", objectPosition: "center" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/60" />
+        </div>
+
+        {/* RIGHT — tekst */}
+        <div className="flex flex-col justify-center px-10 lg:px-16 py-12 bg-[#0a0a0a]">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true }}
+            className="max-w-sm space-y-8"
+          >
+            <div className="space-y-4">
+              <p className="text-[10px] text-white/30 uppercase tracking-widest">Rzemiosło</p>
+              <h2 className="text-4xl lg:text-5xl font-light leading-tight">
+                Precyzja<br />w każdym<br />detalu.
+              </h2>
             </div>
 
-            <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
-              Wybierz każdy komponent. Złożymy go ręcznie, z precyzją, jakiej nie ma
-              żaden masowy producent.
+            <p className="text-sm text-white/50 leading-relaxed">
+              Każdy zegarek AuroraLab jest składany ręcznie przez doświadczonego zegarmistrza.
+              Żadnych kompromisów — tylko komponenty, które przeszły nasz rygorystyczny dobór.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/configurator"
-                className="inline-flex items-center justify-center gap-2 bg-black text-white text-sm font-medium px-7 py-3 rounded-full hover:bg-gray-800 transition-colors"
-              >
-                Zacznij konfigurować
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </Link>
-              <a
-                href="#craft"
-                className="inline-flex items-center justify-center gap-2 text-sm text-gray-500 px-7 py-3 rounded-full border border-gray-200 hover:border-gray-400 hover:text-black transition-colors"
-              >
-                Dowiedz się więcej
-              </a>
-            </div>
-
-            {/* Specs bar */}
-            <div className="flex gap-8 pt-4 border-t border-gray-100">
+            <div className="space-y-3 pt-2">
               {[
-                { value: "NH35", label: "Mechanizm" },
-                { value: "36mm", label: "Średnica" },
-                { value: "60+", label: "Kombinacji" },
-              ].map(({ value, label }) => (
-                <div key={label}>
-                  <p className="text-lg font-medium">{value}</p>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wide mt-0.5">{label}</p>
+                "Mechanizm Seiko NH35 · 28 800 bph",
+                "Koperta 36mm",
+                "Ręczny montaż i regulacja",
+                "Kontrola jakości przed wysyłką",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 text-xs text-white/60">
+                  <div className="w-1 h-1 rounded-full bg-white/40" />
+                  {item}
                 </div>
               ))}
             </div>
           </motion.div>
         </div>
+      </section>
 
-        {/* RIGHT — 3D model */}
-        <div className="relative bg-[#f7f7f7] flex items-center justify-center order-1 lg:order-2 min-h-[50vh] lg:min-h-0">
+      {/* ══════════════════════════════════════
+          SEKCJA 3 — MECHANIZM (fullscreen foto)
+      ══════════════════════════════════════ */}
+      <section className="snap-section relative">
+        <Image
+          src="/images/photo-1612263731558-bbac49f8581a.jpg"
+          alt="Mechanizm zegarka"
+          fill
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.2 }}
-            className="w-full h-full min-h-[50vh] lg:min-h-screen"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="space-y-6 max-w-lg"
           >
-            <WatchModel3D />
-          </motion.div>
-
-          {/* Subtle label */}
-          <div className="absolute bottom-6 right-6 text-[10px] text-gray-400 uppercase tracking-widest">
-            Przeciągnij aby obrócić
-          </div>
-        </div>
-      </section>
-
-      {/* ── CRAFT — 3 zdjęcia ── */}
-      <section id="craft" className="py-24 lg:py-32 px-6 lg:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
-        >
-          <div className="mb-14">
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-3">Rzemiosło</p>
-            <h2 className="text-3xl lg:text-4xl font-light">
-              Precyzja w każdym detalu
+            <p className="text-[10px] text-white/40 uppercase tracking-widest">Mechanizm</p>
+            <h2 className="text-5xl lg:text-6xl font-light text-white leading-tight">
+              28 800<br />
+              <span className="text-2xl font-normal text-white/60">uderzeń na godzinę</span>
             </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {photos.map(({ src, label, desc }, i) => (
-              <motion.div
-                key={src}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.12, duration: 0.6 }}
-                viewport={{ once: true }}
-                className="group space-y-4"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                  <Image
-                    src={src}
-                    alt={label}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                    className="group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">{label}</p>
-                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">{desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* ── ABOUT — zdjęcie pełnoekranowe + tekst ── */}
-      <section id="about" className="grid grid-cols-1 lg:grid-cols-2 min-h-[70vh]">
-        <div className="relative min-h-[50vh] lg:min-h-0 overflow-hidden">
-          <Image
-            src="/images/photo-1569702948069-343ed9bf6fe2.jpg"
-            alt="Mechanizm zegarka"
-            fill
-            sizes="50vw"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-          className="flex flex-col justify-center px-8 lg:px-16 py-16 bg-[#fafafa]"
-        >
-          <div className="max-w-sm space-y-6">
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest">O nas</p>
-            <h2 className="text-3xl lg:text-4xl font-light leading-snug">
-              Tworzymy zegarki, nie produkty.
-            </h2>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              AuroraLab powstało z pasji do mechanicznych zegarków i frustracji brakiem
-              możliwości personalizacji. Każdy zegarek, który opuszcza nasze warsztaty,
-              jest unikatowy — złożony ręcznie, sprawdzony i gotowy na lata.
+            <p className="text-sm text-white/50 leading-relaxed max-w-xs mx-auto">
+              Seiko NH35 — niezawodny, serwisowany od dekad, dobierany przez horologistów na całym świecie.
             </p>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              Bazujemy na sprawdzonym mechanizmie Seiko NH35, który gwarantuje niezawodność
-              i możliwość serwisowania przez dziesiątki lat.
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          SEKCJA 4 — O NAS (2 zdjęcia)
+      ══════════════════════════════════════ */}
+      <section id="about" className="snap-section bg-[#0f0f0f] grid grid-cols-1 lg:grid-cols-2">
+
+        {/* RIGHT — tekst po lewej tutaj */}
+        <div className="flex flex-col justify-center px-10 lg:px-16 py-12 order-2 lg:order-1">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="max-w-sm space-y-8"
+          >
+            <div className="space-y-4">
+              <p className="text-[10px] text-white/30 uppercase tracking-widest">O nas</p>
+              <h2 className="text-4xl font-light leading-tight">
+                Tworzymy<br />zegarki,<br />nie produkty.
+              </h2>
+            </div>
+            <p className="text-sm text-white/50 leading-relaxed">
+              AuroraLab powstało z pasji do mechanicznych zegarków. Każda sztuka jest unikatowa — zaprojektowana przez Ciebie, złożona przez nas.
             </p>
             <Link
               href="/configurator"
-              className="inline-flex items-center gap-2 text-sm font-medium text-black border-b border-black pb-0.5 hover:opacity-60 transition-opacity w-fit"
+              className="inline-flex items-center gap-2 text-xs text-white uppercase tracking-widest border-b border-white/30 pb-1 hover:border-white transition-colors w-fit"
             >
               Stwórz swój zegarek
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
             </Link>
+          </motion.div>
+        </div>
+
+        {/* Dwa zdjęcia w siatce po prawej */}
+        <div className="grid grid-rows-2 order-1 lg:order-2 h-[50vh] lg:h-full">
+          <div className="relative overflow-hidden">
+            <Image
+              src="/images/photo-1694023769753-ab40f6aeb52a.jpg"
+              alt="Detal mechanizmu"
+              fill
+              sizes="50vw"
+              style={{ objectFit: "cover" }}
+            />
           </div>
-        </motion.div>
+          <div className="relative overflow-hidden">
+            <Image
+              src="/images/photo-1633451238042-85d93d267866.jpg"
+              alt="Tryby zegarka"
+              fill
+              sizes="50vw"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        </div>
       </section>
 
-      {/* ── CTA BANNER ── */}
-      <section className="py-24 lg:py-32 px-6 text-center bg-black text-white">
+      {/* ══════════════════════════════════════
+          SEKCJA 5 — CTA KOŃCOWE
+      ══════════════════════════════════════ */}
+      <section className="snap-section bg-[#0a0a0a] flex flex-col items-center justify-center text-center px-6">
+
+        {/* Duży napis w tle */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span
+            className="text-[22vw] font-black text-white leading-none"
+            style={{ opacity: 0.03, letterSpacing: "-0.05em" }}
+          >
+            LAB
+          </span>
+        </div>
+
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.9 }}
           viewport={{ once: true }}
-          className="space-y-8 max-w-xl mx-auto"
+          className="relative space-y-10 max-w-xl"
         >
-          <h2 className="text-4xl lg:text-5xl font-light leading-tight">
-            Gotowy na swój<br />zegarek?
-          </h2>
-          <p className="text-sm text-gray-400 leading-relaxed">
-            Konfigurator zajmuje 2 minuty. Zegarek — całe życie.
+          <div className="space-y-4">
+            <p className="text-[10px] text-white/30 uppercase tracking-widest">Gotowy?</p>
+            <h2 className="text-5xl lg:text-6xl font-light text-white leading-tight">
+              Twój zegarek<br />czeka.
+            </h2>
+          </div>
+          <p className="text-sm text-white/40 leading-relaxed">
+            Konfigurator zajmuje 2 minuty.<br />Zegarek — całe życie.
           </p>
           <Link
             href="/configurator"
-            className="inline-flex items-center gap-2 bg-white text-black text-sm font-medium px-8 py-4 rounded-full hover:bg-gray-100 transition-colors"
+            className="inline-flex items-center gap-3 bg-white text-black text-xs font-semibold tracking-widest uppercase px-10 py-4 rounded-full hover:bg-white/90 transition-colors"
           >
             Otwórz konfigurator
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -244,13 +278,14 @@ export default function Home() {
             </svg>
           </Link>
         </motion.div>
+
+        {/* Footer w tej sekcji */}
+        <div className="absolute bottom-6 inset-x-0 flex items-center justify-between px-8 lg:px-12">
+          <p className="text-[10px] text-white/20">© 2024 AuroraLab</p>
+          <p className="text-[10px] text-white/20">Seiko NH35 · Custom Watch Builds</p>
+        </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="h-14 border-t border-gray-100 flex items-center justify-between px-6 lg:px-10 bg-white">
-        <p className="text-xs text-gray-400">© 2024 AuroraLab</p>
-        <p className="text-xs text-gray-400">Seiko NH35 · Custom Watch Builds</p>
-      </footer>
     </div>
   );
 }
