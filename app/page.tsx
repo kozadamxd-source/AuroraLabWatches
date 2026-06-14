@@ -21,7 +21,11 @@ export default function Home() {
 
       {/* ── FIXED HEADER ── */}
       <header className="fixed top-0 z-50 flex items-center justify-between h-20" style={{ left: 0, right: 0, paddingLeft: "40px", paddingRight: "40px" }}>
-        <Image src="/LOGO.png" alt="AuroraLab" width={180} height={60} style={{ objectFit: "contain" }} />
+        {/* Spacer na mobile żeby logo było wyśrodkowane */}
+        <div className="lg:hidden w-8" />
+        <div className="lg:contents flex flex-1 lg:flex-none justify-center lg:justify-start">
+          <Image src="/LOGO.png" alt="AuroraLab" width={180} height={60} style={{ objectFit: "contain" }} />
+        </div>
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-10 text-sm text-white/50 tracking-widest uppercase">
