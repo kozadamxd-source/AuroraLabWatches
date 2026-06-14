@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import WatchPreview from "@/components/WatchPreview";
-import ConfigPanel from "@/components/ConfigPanel";
+import Link from "next/link";
 
 interface PricingData {
   cases: Record<string, { name: string; image: string; price: number }>;
@@ -12,118 +12,481 @@ interface PricingData {
   basePrices: { movement: number; labor: number };
 }
 
+const STEPS = ["case", "bracelet", "dial", "summary"] as const;
+type Step = (typeof STEPS)[number];
+
 export default function ConfiguratorPage() {
   const [pricing, setPricing] = useState<PricingData | null>(null);
-  const [selectedCase, setSelectedCase] = useState("gold");
-  const [selectedDial, setSelectedDial] = useState("BLUE");
-  const [selectedBracelet, setSelectedBracelet] = useState("PRESIDENT-GOLD");
+  const [selectedCase, setSelectedCase] = useState<string | null>(null);
+  const [selectedBracelet, setSelectedBracelet] = useState<string | null>(null);
+  const [selectedDial, setSelectedDial] = useState<string | null>(null);
+  const [step, setStep] = useState<Step>("case");
   const [cartLoading, setCartLoading] = useState(false);
+
+  const sectionRefs = {
+    case: useRef<HTMLDivElement>(null),
+    bracelet: useRef<HTMLDivElement>(null),
+    dial: useRef<HTMLDivElement>(null),
+    summary: useRef<HTMLDivElement>(null),
+  };
 
   useEffect(() => {
     fetch("/pricing.json")
-      .then((res) => res.json())
-      .then((data) => setPricing(data));
+      .then((r) => r.json())
+      .then(setPricing);
   }, []);
 
-  if (!pricing) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <p className="text-sm text-gray-400 tracking-widest uppercase">Ładowanie</p>
-      </div>
-    );
-  }
+  const scrollTo = (s: Step) => {
+    setStep(s);
+    sectionRefs[s].current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-  const currentCase = pricing.cases[selectedCase];
-  const currentDial = pricing.dials[selectedDial];
-  const currentBracelet = pricing.bracelets[selectedBracelet];
+  const pickCase = (key: string) => {
+    setSelectedCase(key);
+    setTimeout(() => scrollTo("bracelet"), 400);
+  };
 
-  const totalPrice =
-    currentCase.price +
-    currentDial.price +
-    currentBracelet.price +
-    pricing.basePrices.movement +
-    pricing.basePrices.labor;
+  const pickBracelet = (key: string) => {
+    setSelectedBracelet(key);
+    setTimeout(() => scrollTo("dial"), 400);
+  };
 
-  const caseOptions = Object.entries(pricing.cases).map(([key, value]) => ({ key, ...value }));
-  const dialOptions = Object.entries(pricing.dials).map(([key, value]) => ({ key, ...value }));
-  const braceletOptions = Object.entries(pricing.bracelets).map(([key, value]) => ({ key, ...value }));
+  const pickDial = (key: string) => {
+    setSelectedDial(key);
+    setTimeout(() => scrollTo("summary"), 400);
+  };
 
   const handleAddToCart = () => {
     setCartLoading(true);
     setTimeout(() => {
       setCartLoading(false);
       alert("Zegarek dodany do koszyka!");
-    }, 600);
+    }, 700);
   };
 
+  if (!pricing) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-xs text-gray-400 tracking-widest uppercase"
+        >
+          Ładowanie
+        </motion.p>
+      </div>
+    );
+  }
+
+  const caseOptions = Object.entries(pricing.cases).map(([key, v]) => ({ key, ...v }));
+  const braceletOptions = Object.entries(pricing.bracelets).map(([key, v]) => ({ key, ...v }));
+  const dialOptions = Object.entries(pricing.dials).map(([key, v]) => ({ key, ...v }));
+
+  const caseData = selectedCase ? pricing.cases[selectedCase] : null;
+  const braceletData = selectedBracelet ? pricing.bracelets[selectedBracelet] : null;
+  const dialData = selectedDial ? pricing.dials[selectedDial] : null;
+
+  const totalPrice =
+    (caseData?.price ?? 0) +
+    (braceletData?.price ?? 0) +
+    (dialData?.price ?? 0) +
+    pricing.basePrices.movement +
+    pricing.basePrices.labor;
+
+  const stepIndex = STEPS.indexOf(step);
+
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {/* ── Header ── */}
-      <header className="h-14 border-b border-gray-100 flex items-center justify-between px-6 lg:px-10 shrink-0">
-        <a href="/" className="text-base font-semibold tracking-tight text-black">AuroraLab</a>
-        <span className="text-xs text-gray-400 tracking-widest uppercase hidden sm:block">Custom Timepiece Builder</span>
+    <div className="bg-white text-black">
+      {/* ── Fixed header ── */}
+      <header className="fixed top-0 inset-x-0 z-50 h-14 flex items-center justify-between px-6 lg:px-10 bg-white border-b border-gray-100">
+        <Link href="/" className="text-base font-semibold tracking-tight">
+          AuroraLab
+        </Link>
+
+        {/* Step indicator */}
+        <div className="flex items-center gap-3">
+          {(["case", "bracelet", "dial"] as Step[]).map((s, i) => (
+            <button
+              key={s}
+              onClick={() => scrollTo(s)}
+              className="flex items-center gap-2 text-xs"
+            >
+              <span
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium transition-colors ${
+                  stepIndex > i
+                    ? "bg-black text-white"
+                    : stepIndex === i
+                    ? "bg-black text-white"
+                    : "bg-gray-100 text-gray-400"
+                }`}
+              >
+                {stepIndex > i ? "✓" : i + 1}
+              </span>
+              <span className={`hidden sm:block ${stepIndex >= i ? "text-black" : "text-gray-400"}`}>
+                {s === "case" ? "Koperta" : s === "bracelet" ? "Bransoleta" : "Tarcza"}
+              </span>
+            </button>
+          ))}
+        </div>
       </header>
 
-      {/* ── Main: split pane ── */}
-      {/* On desktop: left half = watch preview, right half = options, scrollable */}
-      {/* On mobile: stacked, preview first */}
-      <div className="flex flex-col lg:flex-row flex-1 pb-24 lg:pb-28">
+      {/* ── Section: KOPERTA ── */}
+      <section
+        ref={sectionRefs.case}
+        className="min-h-screen pt-14 flex flex-col items-center justify-center px-4 py-16"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Krok 1 z 3</p>
+          <h2 className="text-3xl lg:text-4xl font-light">Wybierz kopertę</h2>
+        </motion.div>
 
-        {/* LEFT — watch preview, sticky on desktop */}
-        <div className="lg:sticky lg:top-14 lg:h-[calc(100vh-3.5rem)] lg:w-1/2 flex items-center justify-center bg-[#f8f8f8] p-8 lg:p-16">
-          <div className="w-full max-w-md">
-            <WatchPreview
-              caseImage={currentCase.image}
-              dialImage={currentDial.image}
-              braceletImage={currentBracelet.image}
-            />
-          </div>
-        </div>
+        {/* Watch canvas */}
+        <div className="relative w-64 h-64 lg:w-80 lg:h-80 mb-12">
+          <AnimatePresence mode="wait">
+            {selectedCase && (
+              <motion.div
+                key={selectedCase}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={pricing.cases[selectedCase].image}
+                  alt="Case"
+                  fill
+                  priority
+                  style={{ objectFit: "contain", filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.15))" }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/* RIGHT — scrollable config panels */}
-        <div className="lg:w-1/2 px-6 lg:px-12 py-10 space-y-10">
-          <div>
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Seiko NH35 · 36 mm · 28 800 bph</p>
-            <h2 className="text-2xl font-light text-black">Skonfiguruj swój zegarek</h2>
-          </div>
-
-          <ConfigPanel title="Koperta" options={caseOptions} selected={selectedCase} onSelect={setSelectedCase} />
-          <ConfigPanel title="Tarcza" options={dialOptions} selected={selectedDial} onSelect={setSelectedDial} />
-          <ConfigPanel title="Bransoleta" options={braceletOptions} selected={selectedBracelet} onSelect={setSelectedBracelet} />
-
-          {/* Spacer so content isn't hidden behind sticky bar */}
-          <div className="h-4" />
-        </div>
-      </div>
-
-      {/* ── Sticky bottom bar ── */}
-      <div className="fixed bottom-0 inset-x-0 bg-white border-t border-gray-100 z-30">
-        <div className="max-w-screen-xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between gap-4">
-          {/* Summary */}
-          <div className="flex gap-6 text-sm text-gray-500 hidden sm:flex">
-            <span>{currentCase.name}</span>
-            <span className="text-gray-200">|</span>
-            <span>{currentDial.name}</span>
-            <span className="text-gray-200">|</span>
-            <span>{currentBracelet.name}</span>
-          </div>
-
-          {/* Price + CTA */}
-          <div className="flex items-center gap-6 ml-auto">
-            <div className="text-right">
-              <p className="text-[10px] text-gray-400 uppercase tracking-widest">Cena</p>
-              <p className="text-xl font-semibold text-black">${totalPrice}</p>
-            </div>
-            <button
-              onClick={handleAddToCart}
-              disabled={cartLoading}
-              className="bg-black text-white text-sm font-medium tracking-wide px-8 py-3 hover:bg-gray-900 transition-colors disabled:opacity-40"
+          {!selectedCase && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 flex items-center justify-center"
             >
-              {cartLoading ? "Dodawanie…" : "Dodaj do koszyka"}
-            </button>
-          </div>
+              <div className="w-40 h-40 rounded-full border border-dashed border-gray-200 flex items-center justify-center">
+                <span className="text-xs text-gray-300 uppercase tracking-widest">Koperta</span>
+              </div>
+            </motion.div>
+          )}
         </div>
-      </div>
+
+        {/* Options */}
+        <div className="flex flex-wrap justify-center gap-4 max-w-lg">
+          {caseOptions.map((opt, i) => (
+            <motion.button
+              key={opt.key}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.4 }}
+              viewport={{ once: true }}
+              onClick={() => pickCase(opt.key)}
+              className={`group flex flex-col items-center gap-2 p-4 border transition-all duration-200 w-36 ${
+                selectedCase === opt.key
+                  ? "border-black bg-gray-50"
+                  : "border-gray-200 hover:border-gray-400"
+              }`}
+            >
+              <div className="relative w-24 h-24">
+                <Image
+                  src={opt.image}
+                  alt={opt.name}
+                  fill
+                  sizes="96px"
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+              <p className="text-xs font-medium">{opt.name}</p>
+              <p className="text-[10px] text-gray-400">+${opt.price}</p>
+            </motion.button>
+          ))}
+        </div>
+
+        {selectedCase && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => scrollTo("bracelet")}
+            className="mt-10 flex items-center gap-2 text-sm text-gray-500 hover:text-black transition-colors"
+          >
+            Dalej
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.button>
+        )}
+      </section>
+
+      {/* ── Section: BRANSOLETA ── */}
+      <section
+        ref={sectionRefs.bracelet}
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#fafafa]"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Krok 2 z 3</p>
+          <h2 className="text-3xl lg:text-4xl font-light">Wybierz bransoletę</h2>
+        </motion.div>
+
+        {/* Watch canvas: case + bracelet */}
+        <div className="relative w-64 h-64 lg:w-80 lg:h-80 mb-12">
+          {selectedCase && (
+            <div className="absolute inset-0">
+              <Image
+                src={pricing.cases[selectedCase].image}
+                alt="Case"
+                fill
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          )}
+          <AnimatePresence mode="wait">
+            {selectedBracelet && (
+              <motion.div
+                key={selectedBracelet}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={pricing.bracelets[selectedBracelet].image}
+                  alt="Bracelet"
+                  fill
+                  style={{ objectFit: "contain", filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.15))" }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {!selectedBracelet && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute bottom-0 inset-x-0 flex justify-center pb-2"
+            >
+              <span className="text-[10px] text-gray-300 uppercase tracking-widest">Bransoleta</span>
+            </motion.div>
+          )}
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 max-w-2xl">
+          {braceletOptions.map((opt, i) => (
+            <motion.button
+              key={opt.key}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07, duration: 0.4 }}
+              viewport={{ once: true }}
+              onClick={() => pickBracelet(opt.key)}
+              className={`group flex flex-col items-center gap-2 p-4 border bg-white transition-all duration-200 w-32 ${
+                selectedBracelet === opt.key
+                  ? "border-black"
+                  : "border-gray-200 hover:border-gray-400"
+              }`}
+            >
+              <div className="relative w-20 h-20">
+                <Image src={opt.image} alt={opt.name} fill sizes="80px" style={{ objectFit: "contain" }} />
+              </div>
+              <p className="text-[11px] font-medium text-center leading-tight">{opt.name}</p>
+              <p className="text-[10px] text-gray-400">+${opt.price}</p>
+            </motion.button>
+          ))}
+        </div>
+
+        {selectedBracelet && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => scrollTo("dial")}
+            className="mt-10 flex items-center gap-2 text-sm text-gray-500 hover:text-black transition-colors"
+          >
+            Dalej
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.button>
+        )}
+      </section>
+
+      {/* ── Section: TARCZA ── */}
+      <section
+        ref={sectionRefs.dial}
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Krok 3 z 3</p>
+          <h2 className="text-3xl lg:text-4xl font-light">Wybierz tarczę</h2>
+        </motion.div>
+
+        {/* Full watch preview */}
+        <div className="relative w-64 h-64 lg:w-80 lg:h-80 mb-12">
+          {selectedBracelet && (
+            <div className="absolute inset-0">
+              <Image src={pricing.bracelets[selectedBracelet].image} alt="Bracelet" fill
+                style={{ objectFit: "contain", filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.12))" }} />
+            </div>
+          )}
+          {selectedCase && (
+            <div className="absolute inset-0 z-10">
+              <Image src={pricing.cases[selectedCase].image} alt="Case" fill style={{ objectFit: "contain" }} />
+            </div>
+          )}
+          <AnimatePresence mode="wait">
+            {selectedDial && (
+              <motion.div
+                key={selectedDial}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="absolute inset-0 z-20"
+              >
+                <Image src={pricing.dials[selectedDial].image} alt="Dial" fill style={{ objectFit: "contain" }} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 max-w-lg">
+          {dialOptions.map((opt, i) => (
+            <motion.button
+              key={opt.key}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.4 }}
+              viewport={{ once: true }}
+              onClick={() => pickDial(opt.key)}
+              className={`group flex flex-col items-center gap-2 p-4 border transition-all duration-200 w-32 ${
+                selectedDial === opt.key
+                  ? "border-black bg-gray-50"
+                  : "border-gray-200 hover:border-gray-400"
+              }`}
+            >
+              <div className="relative w-20 h-20">
+                <Image src={opt.image} alt={opt.name} fill sizes="80px" style={{ objectFit: "contain" }} />
+              </div>
+              <p className="text-[11px] font-medium">{opt.name}</p>
+              <p className="text-[10px] text-gray-400">+${opt.price}</p>
+            </motion.button>
+          ))}
+        </div>
+
+        {selectedDial && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => scrollTo("summary")}
+            className="mt-10 flex items-center gap-2 text-sm text-gray-500 hover:text-black transition-colors"
+          >
+            Podsumowanie
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.button>
+        )}
+      </section>
+
+      {/* ── Section: SUMMARY ── */}
+      <section
+        ref={sectionRefs.summary}
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#fafafa]"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="w-full max-w-lg"
+        >
+          <div className="text-center mb-10">
+            <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Gotowe</p>
+            <h2 className="text-3xl lg:text-4xl font-light">Twój zegarek</h2>
+          </div>
+
+          {/* Final watch */}
+          <div className="relative w-56 h-56 mx-auto mb-10">
+            {selectedBracelet && (
+              <div className="absolute inset-0">
+                <Image src={pricing.bracelets[selectedBracelet].image} alt="Bracelet" fill
+                  style={{ objectFit: "contain", filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.18))" }} />
+              </div>
+            )}
+            {selectedCase && (
+              <div className="absolute inset-0 z-10">
+                <Image src={pricing.cases[selectedCase].image} alt="Case" fill style={{ objectFit: "contain" }} />
+              </div>
+            )}
+            {selectedDial && (
+              <div className="absolute inset-0 z-20">
+                <Image src={pricing.dials[selectedDial].image} alt="Dial" fill style={{ objectFit: "contain" }} />
+              </div>
+            )}
+          </div>
+
+          {/* Summary table */}
+          <div className="bg-white border border-gray-100 divide-y divide-gray-100 mb-6">
+            <div className="flex justify-between px-6 py-4 text-sm">
+              <span className="text-gray-500">Koperta</span>
+              <span className="font-medium">{caseData?.name ?? "—"}</span>
+            </div>
+            <div className="flex justify-between px-6 py-4 text-sm">
+              <span className="text-gray-500">Bransoleta</span>
+              <span className="font-medium">{braceletData?.name ?? "—"}</span>
+            </div>
+            <div className="flex justify-between px-6 py-4 text-sm">
+              <span className="text-gray-500">Tarcza</span>
+              <span className="font-medium">{dialData?.name ?? "—"}</span>
+            </div>
+            <div className="flex justify-between px-6 py-4 text-sm">
+              <span className="text-gray-500">Mechanizm Seiko NH35</span>
+              <span className="font-medium">wliczony</span>
+            </div>
+            <div className="flex justify-between px-6 py-5">
+              <span className="font-medium">Razem</span>
+              <span className="text-2xl font-light">${totalPrice}</span>
+            </div>
+          </div>
+
+          <button
+            onClick={handleAddToCart}
+            disabled={cartLoading || !selectedCase || !selectedBracelet || !selectedDial}
+            className="w-full bg-black text-white py-4 text-sm font-medium tracking-widest uppercase hover:bg-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {cartLoading ? "Dodawanie…" : "Dodaj do koszyka"}
+          </button>
+
+          <button
+            onClick={() => scrollTo("case")}
+            className="w-full mt-3 py-3 text-xs text-gray-400 hover:text-black transition-colors tracking-wide"
+          >
+            Zacznij od nowa
+          </button>
+        </motion.div>
+      </section>
     </div>
   );
 }
