@@ -3,71 +3,71 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
-      <header className="border-b border-gray-200 py-4 sticky top-0 bg-white z-40">
-        <div className="max-w-full px-4 sm:px-6 lg:px-8">
-          <h1 className="text-lg font-semibold text-black">AuroraLab</h1>
-        </div>
+      <header className="h-14 border-b border-gray-100 flex items-center justify-between px-6 lg:px-10">
+        <h1 className="text-base font-semibold tracking-tight text-black">AuroraLab</h1>
+        <nav className="flex gap-6 text-sm text-gray-500">
+          <a href="#" className="hover:text-black transition-colors">O nas</a>
+          <a href="#" className="hover:text-black transition-colors">Galeria</a>
+          <Link href="/configurator" className="hover:text-black transition-colors">Konfigurator</Link>
+        </nav>
       </header>
 
-      {/* Hero */}
-      <main className="flex-1 flex items-center justify-center px-4 py-16 sm:py-24">
-        <div className="max-w-5xl w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left: Image */}
-            <div>
-              <div className="w-full aspect-square bg-gray-50 flex items-center justify-center border border-gray-200">
-                <svg className="w-32 h-32 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="9" strokeWidth="0.5" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="0.5" d="M12 7v5l4 2" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Right: Content */}
-            <div className="space-y-8">
-              <div className="space-y-3">
-                <p className="text-xs text-gray-500 uppercase tracking-widest font-medium">Premium Custom Watches</p>
-                <h2 className="text-4xl lg:text-5xl font-light text-black leading-tight">
-                  Stwórz swój<br />zegarek
-                </h2>
-              </div>
-
-              <p className="text-base text-gray-600 leading-relaxed max-w-sm">
-                Skonfiguruj unikalny zegarek, wybierając spośród starannie wybranych komponentów. Każda kombinacja jest handcraftowana z precyzją.
-              </p>
-
-              <div className="space-y-2 text-sm text-gray-700">
-                <div className="flex gap-4">
-                  <span className="font-medium min-w-fit text-black">3 koperty</span>
-                  <span>Gold, Rose Gold, Two-Tone</span>
-                </div>
-                <div className="flex gap-4">
-                  <span className="font-medium min-w-fit text-black">4 tarcze</span>
-                  <span>Blue, Green, Pink, Sky Blue</span>
-                </div>
-                <div className="flex gap-4">
-                  <span className="font-medium min-w-fit text-black">5 bransolet</span>
-                  <span>President style variants</span>
-                </div>
-              </div>
-
-              <Link
-                href="/configurator"
-                className="inline-block bg-black text-white px-8 py-3 text-sm font-medium tracking-wide hover:bg-gray-800 transition-colors"
-              >
-                Przejdź do konfiguratora
-              </Link>
-            </div>
+      <main className="flex-1 grid grid-cols-1 lg:grid-cols-2">
+        {/* Left — full-height visual */}
+        <div className="bg-[#f5f5f5] flex items-center justify-center p-12 lg:p-20 min-h-[60vw] lg:min-h-0">
+          <div className="relative w-full max-w-sm aspect-square">
+            {/* Placeholder ring — will be replaced with a real photo */}
+            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-gray-300">
+              <circle cx="100" cy="100" r="78" stroke="currentColor" strokeWidth="0.75"/>
+              <circle cx="100" cy="100" r="58" stroke="currentColor" strokeWidth="0.5"/>
+              <line x1="100" y1="100" x2="100" y2="50" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <line x1="100" y1="100" x2="128" y2="115" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+              {[...Array(12)].map((_, i) => {
+                const angle = (i * 30 - 90) * (Math.PI / 180);
+                const x1 = 100 + 72 * Math.cos(angle);
+                const y1 = 100 + 72 * Math.sin(angle);
+                const x2 = 100 + 65 * Math.cos(angle);
+                const y2 = 100 + 65 * Math.sin(angle);
+                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1"/>;
+              })}
+            </svg>
           </div>
+        </div>
+
+        {/* Right — copy */}
+        <div className="flex flex-col justify-center px-10 lg:px-16 py-14 space-y-8">
+          <div className="space-y-4">
+            <p className="text-[10px] text-gray-400 uppercase tracking-widest">Seiko NH35 · Custom Build</p>
+            <h2 className="text-4xl lg:text-5xl font-light text-black leading-snug">
+              Twój zegarek,<br />Twoje zasady.
+            </h2>
+          </div>
+
+          <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
+            Wybierz kopertę, tarczę i bransoletę. Na żywo podgląd w konfiguratorze. Każda sztuka składana ręcznie.
+          </p>
+
+          <div className="space-y-1.5 text-sm text-gray-600">
+            <p>— 3 warianty kopert</p>
+            <p>— 4 kolory tarcz</p>
+            <p>— 5 stylów bransolet President</p>
+            <p>— Mechanizm Seiko NH35</p>
+          </div>
+
+          <Link
+            href="/configurator"
+            className="inline-flex items-center gap-2 bg-black text-white text-sm font-medium tracking-wide px-7 py-3 hover:bg-gray-900 transition-colors w-fit"
+          >
+            Konfiguruj
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 py-6 bg-white">
-        <div className="max-w-full px-4 sm:px-6 lg:px-8 text-center text-xs text-gray-500">
-          <p>© 2024 AuroraLab. Seiko NH35 • 36mm • 28,800 bph</p>
-        </div>
+      <footer className="h-12 border-t border-gray-100 flex items-center px-6 lg:px-10">
+        <p className="text-[11px] text-gray-400">© 2024 AuroraLab</p>
       </footer>
     </div>
   );
