@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+import AuroraBackground from "@/components/AuroraBackground";
+
 const WatchModel3D = dynamic(() => import("@/components/WatchModel3D"), {
   ssr: false,
   loading: () => null,
@@ -30,6 +32,9 @@ export default function Home() {
           SEKCJA 1 — HERO
       ══════════════════════════════════════ */}
       <section className="snap-section bg-[#0a0a0a] flex items-center justify-center">
+
+        {/* Aurora */}
+        <AuroraBackground />
 
         {/* Big background text */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
@@ -241,6 +246,12 @@ export default function Home() {
           SEKCJA 5 — CTA KOŃCOWE
       ══════════════════════════════════════ */}
       <section className="snap-section bg-[#0a0a0a] flex flex-col items-center justify-center text-center px-6">
+
+        {/* Aurora — delikatniejsza niż w hero */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40" aria-hidden>
+          <div className="aurora-blob" style={{ background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(52,211,153,0.15) 0%, transparent 70%)", animation: "aurora1 14s ease-in-out infinite" }} />
+          <div className="aurora-blob" style={{ background: "radial-gradient(ellipse 50% 30% at 40% 60%, rgba(139,92,246,0.10) 0%, transparent 70%)", animation: "aurora3 18s ease-in-out infinite" }} />
+        </div>
 
         {/* Duży napis w tle */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">

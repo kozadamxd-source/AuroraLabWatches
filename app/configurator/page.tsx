@@ -122,7 +122,9 @@ export default function ConfiguratorPage() {
           KROK 1 — KOPERTA
       ══════════════════════ */}
       <section ref={sectionRefs.case}
-        className="min-h-screen pt-14 flex flex-col items-center justify-center px-4 py-16">
+        className="min-h-screen pt-14 flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden">
+        {/* Aurora accent */}
+        <div className="absolute top-0 inset-x-0 h-64 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 100% at 50% 0%, rgba(52,211,153,0.06) 0%, transparent 100%)" }} />
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-10">
@@ -183,7 +185,8 @@ export default function ConfiguratorPage() {
           KROK 2 — BRANSOLETA
       ══════════════════════ */}
       <section ref={sectionRefs.bracelet}
-        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#0f0f0f]">
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#0f0f0f] relative overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-64 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 100% at 50% 0%, rgba(139,92,246,0.06) 0%, transparent 100%)" }} />
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-10">
@@ -244,7 +247,8 @@ export default function ConfiguratorPage() {
           KROK 3 — TARCZA
       ══════════════════════ */}
       <section ref={sectionRefs.dial}
-        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#0a0a0a]">
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#0a0a0a] relative overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-64 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 100% at 50% 0%, rgba(20,184,166,0.06) 0%, transparent 100%)" }} />
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-10">
@@ -305,7 +309,8 @@ export default function ConfiguratorPage() {
           SUMMARY
       ══════════════════════ */}
       <section ref={sectionRefs.summary}
-        className="min-h-screen flex items-center justify-center px-4 py-20 bg-[#0f0f0f]">
+        className="min-h-screen flex items-center justify-center px-4 py-20 bg-[#0f0f0f] relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(52,211,153,0.04) 0%, rgba(139,92,246,0.04) 50%, transparent 100%)" }} />
 
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }} viewport={{ once: true }}
