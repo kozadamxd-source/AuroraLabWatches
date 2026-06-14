@@ -32,13 +32,13 @@ export default function WatchModel3D() {
       style={{ width: "100%", height: "100%" }}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[5, 5, 5]} intensity={0.8} color="#ffffff" />
-      <directionalLight position={[-4, 2, -2]} intensity={0.2} color="#aaaaff" />
-      <pointLight position={[0, 3, 2]} intensity={0.3} color="#ffffff" />
+      <ambientLight intensity={0.38} />
+      <directionalLight position={[5, 5, 5]} intensity={0.75} color="#ffffff" />
+      <directionalLight position={[-4, 2, -2]} intensity={0.25} color="#aaaaff" />
+      <pointLight position={[0, 3, 2]} intensity={0.5} color="#ffffff" />
       <Suspense fallback={null}>
         <WatchMesh />
-        <Environment preset="night" environmentIntensity={0.3} />
+        <Environment preset="studio" environmentIntensity={0.38} />
         <ContactShadows position={[0, -1.2, 0]} opacity={0.2} scale={5} blur={2.5} />
       </Suspense>
       <OrbitControls

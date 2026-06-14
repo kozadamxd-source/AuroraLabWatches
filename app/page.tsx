@@ -77,7 +77,8 @@ export default function Home() {
           >
             <Link
               href="/configurator"
-              className="inline-flex items-center gap-2 bg-white text-black text-xs font-semibold tracking-widest uppercase px-8 py-3.5 rounded-full hover:bg-white/90 transition-colors"
+              className="inline-flex items-center gap-3 bg-white text-black text-base font-semibold tracking-widest uppercase rounded-full hover:bg-white/90 transition-colors"
+              style={{ padding: "22px 64px" }}
             >
               Stwórz swój zegarek
             </Link>
