@@ -155,13 +155,13 @@ export default function Home() {
         </div>
 
         {/* RIGHT — tekst */}
-        <div className="flex flex-col items-center justify-center py-16 bg-[#0a0a0a]">
+        <div className="flex flex-col items-center justify-center py-12 px-8 lg:px-0 bg-[#0a0a0a]">
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             viewport={{ once: true }}
-            className="max-w-md space-y-10"
+            className="w-full max-w-md space-y-8"
           >
             <div className="space-y-5">
               <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">Rzemiosło</p>
