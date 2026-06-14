@@ -2,98 +2,71 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1a] via-[#0a1428] to-[#1a1a1a] text-[#f5f1e8] flex flex-col overflow-hidden">
-      {/* Animated gradient background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#d4af37] rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#0a1428] rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-      </div>
-
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <header className="relative border-b border-[#d4af37] border-opacity-20 py-8 backdrop-blur-sm bg-[#1a1a1a] bg-opacity-50">
+      <header className="border-b border-gray-200 py-4 sticky top-0 bg-white z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline gap-3">
-            <h1 className="text-4xl font-bold text-[#d4af37]">AuroraLab</h1>
-            <div className="w-1 h-6 bg-gradient-to-b from-[#d4af37] to-transparent opacity-50"></div>
-            <p className="text-xs tracking-widest text-[#c0c0c0] opacity-60 font-mono uppercase">
-              Bespoke Horology
-            </p>
-          </div>
+          <h1 className="text-2xl font-bold text-black">AuroraLab</h1>
+          <p className="text-xs text-gray-600 mt-1">Custom Watch Configurator</p>
         </div>
       </header>
 
       {/* Hero */}
-      <main className="relative flex-1 flex items-center justify-center px-4 py-20 sm:py-32">
-        <div className="max-w-3xl text-center space-y-8">
-          {/* Accent line */}
-          <div className="flex justify-center gap-2">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent to-[#d4af37] opacity-50"></div>
-            <p className="text-xs font-mono text-[#d4af37] tracking-widest uppercase">Precision Crafted</p>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent to-[#d4af37] opacity-50"></div>
-          </div>
-
-          {/* Main heading */}
-          <h2 className="text-5xl sm:text-7xl font-bold leading-tight">
-            <span className="bg-gradient-to-r from-[#d4af37] via-[#f5f1e8] to-[#d4af37] bg-clip-text text-transparent">
-              Craft Your
-            </span>
-            <br />
-            <span className="text-[#f5f1e8]">Signature Watch</span>
-          </h2>
-
-          {/* Description with premium styling */}
-          <div className="space-y-4">
-            <p className="text-lg sm:text-xl text-[#c0c0c0] leading-relaxed font-light">
-              Seiko NH35 movement meets your vision. Layer premium cases, exquisite dials,
-              and refined bracelets into a timepiece uniquely yours.
-            </p>
-            <p className="text-sm font-mono text-[#d4af37] opacity-70 tracking-wide">
-              INTERACTIVE 3D CONFIGURATOR
-            </p>
-          </div>
-
-          {/* CTA Button with hover effect */}
-          <div className="pt-4">
-            <Link
-              href="/configurator"
-              className="group inline-flex items-center gap-3 bg-[#d4af37] text-[#1a1a1a] px-10 py-4 rounded-sm font-bold text-lg tracking-widest hover:bg-[#f5f1e8] transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#d4af37]/20"
-            >
-              <span>CONFIGURE NOW</span>
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-          </div>
-
-          {/* Stats or features */}
-          <div className="pt-8 grid grid-cols-3 gap-4 sm:gap-8 text-center border-t border-[#d4af37] border-opacity-20 pt-8">
-            <div>
-              <p className="text-2xl font-bold text-[#d4af37]">3</p>
-              <p className="text-xs text-[#c0c0c0] opacity-60 font-mono mt-1 uppercase tracking-wider">Premium Cases</p>
+      <main className="flex-1 flex items-center justify-center px-4 py-16 sm:py-24">
+        <div className="max-w-4xl w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Left: Image placeholder */}
+            <div className="flex items-center justify-center">
+              <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
+                <svg className="w-24 h-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-[#d4af37]">5</p>
-              <p className="text-xs text-[#c0c0c0] opacity-60 font-mono mt-1 uppercase tracking-wider">Bracelet Styles</p>
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-[#d4af37]">4</p>
-              <p className="text-xs text-[#c0c0c0] opacity-60 font-mono mt-1 uppercase tracking-wider">Dial Colors</p>
+
+            {/* Right: Content */}
+            <div className="space-y-6">
+              <div>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Seiko NH35</p>
+                <h2 className="text-4xl font-bold text-black leading-tight">
+                  Stwórz swój<br />zegarek
+                </h2>
+              </div>
+
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Wybierz koperty, tarczę i branzoletę, aby stworzyć swój unikalny zegarek. Real-time preview pokazuje dokładnie, jak będzie wyglądać.
+              </p>
+
+              <div className="space-y-3 pt-4 border-t border-gray-200">
+                <div className="flex items-start gap-3">
+                  <span className="text-sm font-semibold text-black min-w-fit">Kopertura:</span>
+                  <span className="text-sm text-gray-600">3 warianty (Gold, Rose Gold, Two-Tone)</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-sm font-semibold text-black min-w-fit">Tarcza:</span>
+                  <span className="text-sm text-gray-600">4 kolory (Blue, Green, Pink, Sky Blue)</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-sm font-semibold text-black min-w-fit">Bransoleta:</span>
+                  <span className="text-sm text-gray-600">5 stylów President</span>
+                </div>
+              </div>
+
+              <Link
+                href="/configurator"
+                className="inline-block bg-black text-white px-8 py-3 font-semibold hover:bg-gray-800 transition-colors mt-6 w-full text-center sm:w-auto"
+              >
+                Przejdź do konfiguratora
+              </Link>
             </div>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="relative border-t border-[#d4af37] border-opacity-20 py-8 backdrop-blur-sm bg-[#1a1a1a] bg-opacity-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-[#c0c0c0] opacity-50 font-mono">
-              © 2024 AuroraLab. Handcrafted with precision.
-            </p>
-            <p className="text-xs text-[#d4af37] opacity-75 font-mono tracking-wider">
-              SEIKO NH35 • 28,800 BPH
-            </p>
-          </div>
+      <footer className="border-t border-gray-200 py-6 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-600">
+          <p>© 2024 AuroraLab. Seiko NH35 • 36mm • 28,800 bph</p>
         </div>
       </footer>
     </div>

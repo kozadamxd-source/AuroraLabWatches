@@ -80,34 +80,25 @@ export default function ConfiguratorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1a] via-[#0a1428] to-[#1a1a1a] text-[#f5f1e8]">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-[#d4af37] border-opacity-30 py-6 sticky top-0 z-50 bg-[#1a1a1a] bg-opacity-95 backdrop-blur-md">
+      <header className="border-b border-gray-200 py-4 sticky top-0 z-40 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#d4af37]">
-                AuroraLab
-              </h1>
-              <p className="text-xs sm:text-sm text-[#c0c0c0] opacity-60 mt-2 font-mono tracking-widest uppercase">
-                Interactive Watch Configurator
-              </p>
-            </div>
-            <div className="text-right">
-              <p className="text-xs font-mono text-[#d4af37] opacity-75">NH35 MOVEMENT</p>
+              <h1 className="text-2xl font-bold text-black">AuroraLab</h1>
+              <p className="text-xs text-gray-600 mt-1">Konfigurator zegarków</p>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Watch Preview */}
-          <div className="lg:col-span-1 flex flex-col justify-center">
-            <div className="sticky top-24">
-              <div className="relative">
-                {/* Glow effect behind watch */}
-                <div className="absolute -inset-8 bg-gradient-to-b from-[#d4af37] to-transparent opacity-10 blur-2xl rounded-full"></div>
+          <div className="lg:col-span-1">
+            <div className="sticky top-20">
+              <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
                 <WatchPreview
                   caseImage={currentCase.image}
                   dialImage={currentDial.image}
@@ -120,25 +111,20 @@ export default function ConfiguratorPage() {
           {/* Middle: Configuration Options */}
           <div className="lg:col-span-1">
             <div className="space-y-8">
-              <div>
-                <p className="text-xs font-mono text-[#d4af37] tracking-widest uppercase mb-6 opacity-75">
-                  Step 1 of 3: Select Components
-                </p>
-                <ConfigPanel
-                  title="Case"
-                  options={caseOptions}
-                  selected={selectedCase}
-                  onSelect={setSelectedCase}
-                />
-              </div>
               <ConfigPanel
-                title="Dial"
+                title="Koperta"
+                options={caseOptions}
+                selected={selectedCase}
+                onSelect={setSelectedCase}
+              />
+              <ConfigPanel
+                title="Tarcza"
                 options={dialOptions}
                 selected={selectedDial}
                 onSelect={setSelectedDial}
               />
               <ConfigPanel
-                title="Bracelet"
+                title="Bransoleta"
                 options={braceletOptions}
                 selected={selectedBracelet}
                 onSelect={setSelectedBracelet}
@@ -147,8 +133,8 @@ export default function ConfiguratorPage() {
           </div>
 
           {/* Right: Cart Summary */}
-          <div className="lg:col-span-1 flex flex-col justify-start">
-            <div className="sticky top-24">
+          <div className="lg:col-span-1">
+            <div className="sticky top-20">
               <CartSummary
                 caseName={currentCase.name}
                 dialName={currentDial.name}

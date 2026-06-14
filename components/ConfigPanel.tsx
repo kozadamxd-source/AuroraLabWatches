@@ -23,22 +23,22 @@ export default function ConfigPanel({
   onSelect,
 }: ConfigPanelProps) {
   return (
-    <div className="border-b border-[#d4af37] border-opacity-20 pb-8">
-      <h3 className="text-xl font-bold text-[#f5f1e8] mb-6 tracking-wide">
+    <div className="border-b border-gray-200 pb-8">
+      <h3 className="text-lg font-semibold text-black mb-4">
         {title}
       </h3>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         {options.map((option) => (
           <button
             key={option.key}
             onClick={() => onSelect(option.key)}
-            className={`group relative p-4 rounded-sm border transition-all duration-300 ${
+            className={`group relative p-3 border rounded transition-all ${
               selected === option.key
-                ? "border-[#d4af37] bg-gradient-to-br from-[#d4af37] to-[#d4af37] bg-opacity-15 shadow-lg shadow-[#d4af37]/20"
-                : "border-[#d4af37] border-opacity-25 hover:border-opacity-40 hover:shadow-md hover:shadow-[#d4af37]/10"
+                ? "border-black bg-gray-50"
+                : "border-gray-200 hover:border-gray-300"
             }`}
           >
-            <div className="relative h-24 mb-3 overflow-hidden rounded-sm bg-[#0a1428] bg-opacity-50">
+            <div className="relative h-20 mb-2 overflow-hidden rounded bg-gray-100">
               <Image
                 src={option.image}
                 alt={option.name}
@@ -46,15 +46,12 @@ export default function ConfigPanel({
                 style={{
                   objectFit: "contain",
                 }}
-                className="group-hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <p className="text-sm font-semibold text-[#f5f1e8] truncate leading-tight">
+            <p className="text-xs font-medium text-black truncate">
               {option.name}
             </p>
-            <p className={`text-xs font-mono mt-1 transition-colors ${
-              selected === option.key ? "text-[#d4af37]" : "text-[#d4af37] opacity-75"
-            }`}>
+            <p className="text-xs text-gray-600 mt-1">
               +${option.price}
             </p>
           </button>
